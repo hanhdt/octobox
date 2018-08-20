@@ -27,6 +27,12 @@
   <td class='notification-subject'>
     <%= link_to notification.subject_title, notification.web_url, target: '_blank', rel: "noopener", class: 'link', onclick: "markRead(#{notification.id})" %>
 
+    <% if Octobox.github_app? && notification.subjectable? && !notification.github_app_installed? %>
+      <a href="<%= Octobox.config.app_install_url %>" class='text-muted ml-1' title='Install the Octobox GitHub app on <%= notification.repository.full_name %> for status, author and assignee data' data-toggle='tooltip'>
+        <%= octicon 'info' %>
+      </a>
+    <% end %>
+
     <% if display_subject? %>
       <% if notification.subject %>
         <% notification.subject.labels.each do |label| %>
@@ -35,6 +41,7 @@
       <% end %>
     <% end %>
   </td>
+
   <% unless params[:repo].present? %>
     <td class='notification-repo'>
       <small>

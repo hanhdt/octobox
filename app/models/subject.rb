@@ -6,6 +6,8 @@ class Subject < ApplicationRecord
   BOT_AUTHOR_REGEX = /\A(.*)\[bot\]\z/.freeze
   private_constant :BOT_AUTHOR_REGEX
 
+  scope :label, ->(label_name) { joins(:labels).where(Label.arel_table[:name].matches(label_name)) }
+
   def author_url
     "#{Octobox.config.github_domain}#{author_url_path}"
   end
